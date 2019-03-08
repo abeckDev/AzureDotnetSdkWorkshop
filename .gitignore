@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Secret Settings
+AbeckDev.AzureSdkDemos.Common\test\testsettings.json
+
 # User-specific files
 *.suo
 *.user
