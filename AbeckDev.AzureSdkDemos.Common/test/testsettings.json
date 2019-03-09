@@ -1,6 +1,6 @@
 {
   "AzureConnectSettings": {
-    "clientId": "",
+    "clientId": "fooo",
     "clientSecret": "",
     "tenantId": "",
     "subscriptionId": ""
