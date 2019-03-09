@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>AbeckDev</Authors>
+    <Company />
+    <Product />
+    <Description>A Library containing some samples on how to use Azure SDK to create and deploy Resources to Microsoft Azure Cloud.</Description>
+    <PackageLicenseUrl>https://github.com/abeckDev/AzureDotnetSdkSample/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/abeckDev/AzureDotnetSdkSample/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/abeckDev/AzureDotnetSdkSample/</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
