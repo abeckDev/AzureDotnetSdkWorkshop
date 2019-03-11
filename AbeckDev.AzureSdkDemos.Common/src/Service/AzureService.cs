@@ -6,9 +6,9 @@ using Microsoft.Azure.Management.ResourceManager.Fluent.Deployment.Definition;
 using System;
 using System.Collections.Generic;
 
-namespace AbeckDev.AzureSdkDemos.Common
+namespace AbeckDev.AzureSdkDemos.Common.Service
 {
-    public static class AzureCommon
+    public static class AzureService
     {
         /// <summary>
         /// Gets an <see cref="IAzure"/> by authenticating against Azure AD with a Service Principal
@@ -31,6 +31,34 @@ namespace AbeckDev.AzureSdkDemos.Common
         }
 
         /// <summary>
+        /// List all existing ResourceGroups in an Azure Subscription
+        /// </summary>
+        /// <param name="azure">The <see cref="IAzure"/> Interface used to communicate with Azure</param>
+        /// <returns>Returns an <see cref="IEnumerable{IResourceGroup}"/></returns>
+        public static IEnumerable<IResourceGroup> ListResourceGroups(IAzure azure)
+        {
+            return azure.ResourceGroups.List();
+        }
+
+
+        /// <summary>
+        /// Creates a Azure Resource Group based on the input
+        /// </summary>
+        /// <param name="azure">The <see cref="IAzure"/> Interface used to communicate with Azure</param>
+        /// <param name="ResourceGroupName">The name of the Resource Group</param>
+        /// <param name="ResourceGroupRegion">The Region of the Resource Group</param>
+        /// <returns>Returns an <see cref="IResourceGroup"/> object with information about the created ResourceGroup</returns>
+        /// <exception cref="Exception">Throws an exception if the Resource Group already exists</exception>
+        public static IResourceGroup CreateResourceGroup(IAzure azure, string ResourceGroupName, string ResourceGroupRegion)
+        {
+            return azure.ResourceGroups.Define(ResourceGroupName)
+                .WithRegion(ResourceGroupRegion)
+                .Create();
+        }
+
+
+
+        /// <summary>
         /// Deploys an Azure Resource Manager (ARM) Template based on an existing Azure connection.
         /// </summary>
         /// <param name="azure">The <see cref="IAzure"/> Interface from the existing connection</param>
@@ -38,40 +66,27 @@ namespace AbeckDev.AzureSdkDemos.Common
         /// <param name="templateJson">The ARM Template File in Json</param>
         /// <param name="parametersJson">The Parameters File in Json</param>
         /// <returns>An <see cref="IDeployment"/> Object with information of the deployment operation in Azure</returns>
-        public static IDeployment DeployArmTemplate(IAzure azure, string ResourceGroupName, string templateJson, string parametersJson)
+        public static IDeployment DeployArmTemplate(IAzure azure, string ResourceGroupName, string templateJson, object parameters)
         {
-            if (!azure.ResourceGroups.Contain(ResourceGroupName))
-            {
-                CreateResourceGroup(azure, ResourceGroupName);
-            }
-            string deploymentName = ResourceGroupName + "-" + Guid.NewGuid().ToString();
-            azure.Deployments.Define(deploymentName)
+            string DeploymentName = "Deployment-" + Guid.NewGuid().ToString();
+            var deployment = azure.Deployments.Define(DeploymentName)
                 .WithExistingResourceGroup(ResourceGroupName)
                 .WithTemplate(templateJson)
-                .WithParameters(parametersJson)
+                .WithParameters(parameters)
                 .WithMode(Microsoft.Azure.Management.ResourceManager.Fluent.Models.DeploymentMode.Incremental)
                 .BeginCreate();
-            var result = azure.Deployments
-                .GetByName(deploymentName);
-            return result;
+
+            return azure.Deployments.GetByName(DeploymentName);
         }
 
-        public static IResourceGroup CreateResourceGroup(IAzure azure, string ResourceGroupName)
+        /// <summary>
+        /// Deletes a Resource Group by its name
+        /// </summary>
+        /// <param name="azure">The <see cref="IAzure"/> Interface from the existing connection</param>
+        /// <param name="ResourceGroupName">The Name of the Resource Group</param>
+        public static void DeleteResourceGroup(IAzure azure, string ResourceGroupName)
         {
-            if (azure.ResourceGroups.Contain(ResourceGroupName))
-            {
-                //ResourceGroup exists abort
-                throw new Exception("The ResourceGroup exist already");
-            }
-
-            Dictionary<string, string> tags = new Dictionary<string, string>();
-            tags.Add("Sample Tag Key", "Sample Tag Value");
-            tags.Add("CreationDate", DateTime.Now.Date.ToLongDateString());
-
-            return azure.ResourceGroups.Define(ResourceGroupName)
-                .WithRegion(Region.EuropeWest)
-                .WithTags(tags)
-                .Create();
+            azure.ResourceGroups.DeleteByName(ResourceGroupName);
         }
     }
 }

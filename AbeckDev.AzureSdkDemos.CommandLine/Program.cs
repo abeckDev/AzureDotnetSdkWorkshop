@@ -1,5 +1,5 @@
-﻿using AbeckDev.AzureDotnetSdkSamples.CommandLine.Model;
-using AbeckDev.AzureSdkDemos.Common;
+﻿using AbeckDev.AzureSdkDemos.CommandLine.Model;
+using AbeckDev.AzureSdkDemos.CommandLine.Service;
 using ConsoleTableExt;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
@@ -9,7 +9,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 
-namespace AbeckDev.AzureDotnetSdkSamples.CommandLine
+namespace AbeckDev.AzureSdkDemos.CommandLine
 {
     class Program
     {
@@ -32,7 +32,7 @@ namespace AbeckDev.AzureDotnetSdkSamples.CommandLine
             try
             {
                 //Connect to Azure
-                IAzure azure = AzureCommon.GetAzureInterface(clientId, clientSecret, tenantId, subscriptionId);
+                IAzure azure = AzureService.GetAzureInterface(clientId, clientSecret, tenantId, subscriptionId);
                 //Verify connection
                 azure.ResourceGroups.List();
 
@@ -50,7 +50,7 @@ namespace AbeckDev.AzureDotnetSdkSamples.CommandLine
                     switch (decision.ToLower())
                     {
                         case "1":
-                            var ResourceGroups = azure.ResourceGroups.List();
+                            var ResourceGroups = AzureService.ListResourceGroups(azure);
                             DataTable table = new DataTable();
                             table.Columns.Add("Id");
                             table.Columns.Add("Name");
@@ -71,9 +71,7 @@ namespace AbeckDev.AzureDotnetSdkSamples.CommandLine
                             string ResourceGroupRegion = Console.ReadLine();
                             try
                             {
-                                var ResourceGroup = azure.ResourceGroups.Define(ResourceGroupName)
-                                    .WithRegion(ResourceGroupRegion)
-                                    .Create();
+                                var ResourceGroup = AzureService.CreateResourceGroup(azure, ResourceGroupName, ResourceGroupRegion);
                                 Console.WriteLine("Done: " + ResourceGroup.Id);
                             }
                             catch (Exception e)
@@ -101,17 +99,11 @@ namespace AbeckDev.AzureDotnetSdkSamples.CommandLine
                             string adminUsername = Console.ReadLine();
                             Console.Write("AdminPassword: ");
                             string adminPassword = GetConsolePassword();
-                            string ParametersJson = JsonConvert.SerializeObject(new VmParameter(adminUsername, adminPassword));
+                            var Parameters = new VmParameter(adminUsername, adminPassword);
                             try
                             {
-                                string DeploymentName = "Deployment-" + Guid.NewGuid().ToString();
-                                var deployment = azure.Deployments.Define(DeploymentName)
-                                    .WithExistingResourceGroup(DeploymentResourceGroup)
-                                    .WithTemplate(ArmFileJson)
-                                    .WithParameters(new VmParameter(adminUsername, adminPassword))
-                                    .WithMode(Microsoft.Azure.Management.ResourceManager.Fluent.Models.DeploymentMode.Incremental)
-                                    .BeginCreate();
-                                Console.WriteLine("Deployment ("+ DeploymentName +") started: " + azure.Deployments.GetByName(DeploymentName).ProvisioningState);
+                                IDeployment deployment = AzureService.DeployArmTemplate(azure, DeploymentResourceGroup, ArmFileJson, Parameters);
+                                Console.WriteLine("Deployment ("+ deployment.Name +") started: " + deployment.ProvisioningState);
                             }
                             catch(Exception e)
                             {
@@ -124,7 +116,7 @@ namespace AbeckDev.AzureDotnetSdkSamples.CommandLine
                             string DeleteResourceGroupName = Console.ReadLine();
                             try
                             {
-                                azure.ResourceGroups.DeleteByName(DeleteResourceGroupName);
+                                AzureService.DeleteResourceGroup(azure, DeleteResourceGroupName);
                                 Console.WriteLine(DeleteResourceGroupName + "successfully deleted");
                             }
                             catch(Exception e)
