@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AbeckDev.AzureDotnetSdkSamples.CommandLine.Model
+namespace AbeckDev.AzureSdkDemos.CommandLine.Model
 {
     public class VmParameter
     {
