@@ -1,2 +1,2 @@
-# AzureDotnetSdkSample
-A collection of samples on HowTo use Azure .NET SDK to manage Azure Resources.
+# AzureDotnetWorkshop
+An Azure .NET Core SDK Workshop for beginners
