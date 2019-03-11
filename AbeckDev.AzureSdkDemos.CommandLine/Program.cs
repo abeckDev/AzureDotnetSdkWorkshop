@@ -1,6 +1,5 @@
 ﻿using AbeckDev.AzureSdkDemos.CommandLine.Model;
-using AbeckDev.AzureSdkDemos.Common.Service;
-//using AbeckDev.AzureSdkDemos.CommandLine.Service;
+using AbeckDev.AzureSdkDemos.CommandLine.Service;
 using ConsoleTableExt;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
