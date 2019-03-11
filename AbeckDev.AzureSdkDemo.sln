@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28606.126
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbeckDev.AzureSdkDemos.Common", "AbeckDev.AzureSdkDemos.Common\src\AbeckDev.AzureSdkDemos.Common.csproj", "{44830A05-2616-438F-A0F6-F376DF769B60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbeckDev.AzureSdkDemos.Common.Test", "AbeckDev.AzureSdkDemos.Common\test\AbeckDev.AzureSdkDemos.Common.Test.csproj", "{335EFF98-DA48-46EF-A139-0E4ED42CEFEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbeckDev.AzureSdkDemos.Common.Test", "AbeckDev.AzureSdkDemos.Common\test\AbeckDev.AzureSdkDemos.Common.Test.csproj", "{335EFF98-DA48-46EF-A139-0E4ED42CEFEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbeckDev.AzureDotnetSdkSamples.CommandLine", "AbeckDev.AzureDotnetSdkSamples.CommandLine\AbeckDev.AzureDotnetSdkSamples.CommandLine.csproj", "{B7C40E10-D143-4655-BEEA-6D9D81F74517}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{335EFF98-DA48-46EF-A139-0E4ED42CEFEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{335EFF98-DA48-46EF-A139-0E4ED42CEFEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{335EFF98-DA48-46EF-A139-0E4ED42CEFEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7C40E10-D143-4655-BEEA-6D9D81F74517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C40E10-D143-4655-BEEA-6D9D81F74517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C40E10-D143-4655-BEEA-6D9D81F74517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C40E10-D143-4655-BEEA-6D9D81F74517}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
